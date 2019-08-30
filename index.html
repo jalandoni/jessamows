@@ -1,0 +1,92 @@
+<html>
+<head>
+  <title>mows</title>
+</head>
+<link><link>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+
+<body>
+  <h1>MQTT</h1>
+  <p>My MQTT Web App</p>
+  <div>
+  <button id="btn-connect">Connect</button>
+  <input type="text" id ="address" value="ws://broker.hivemq.com:8000/mqtt">
+  <input id="status" name="status">
+  <button id="btn-disconnect">Disconnect</button>
+  <table>
+      <thead>
+        <tr>
+        <th>Topic</th>
+        <th>Payload</th>
+        <th>Timestamp</th>
+      </tr>
+      </thead>
+      <tbody id="tbodyB">
+  
+      </tbody>
+  
+    </table>
+  </div>
+  <br>
+  <br>
+
+  <div>
+  <div class="text-center h2">Publisher</div>
+  <label >Topic</label>
+  <input type="text" name="topic" >
+  <label >Payload</label>
+  <input type="text" name="payload" >
+
+
+
+  <button id="btnPublish">Publish</button>
+  <table>
+      <thead>
+        <tr>
+        <th>Topic</th>
+        <th>Payload</th>
+        <th>Timestamp</th>
+      </tr>
+      </thead>
+      <tbody id="tbody1">
+  
+      </tbody>
+  
+    </table>
+
+
+</div>
+  <br>
+  <br>
+  <div>
+  
+  <button id="btnSubscribe">Subscribe</button>
+  <label >Topic</label>
+  <input type="text" name="topicS" >
+  <table>
+      <thead>
+        <tr>
+        <th>Topic</th>
+        <th>Payload</th>
+        <th>Timestamp</th>
+      </tr>
+      </thead>
+      <tbody id="tbody2">
+  
+      </tbody>
+  
+    </table>
+  
+
+</div>
+
+  
+  
+ 
+
+</body>
+
+<script src="scripts/controller.js"></script>
+<script src="scripts/browserMqtt.js"></script>
+</html>
