@@ -1,91 +1,87 @@
-var btnConnect = document.getElementById('btn_connect');
-var btnPublish = document.getElementById('btn_publish');
-var inputTopic ="mqtt/"+ document.getElementById('topic').value;
-var inputPayload = document.getElementById('payload').value;
-var btnSubs = document.getElementById('btn_subscribe');
-var msg = document.getElementById("Message");
-
-
-
-
-
 // basic functionalities
-btnConnect.addEventListener('click', function (e) {
-  e.preventDefault();
-  client = mqtt.connect("ws://broker.hivemq.com:8000/mqtt")
-  client.on("connect", function () {
-    document.getElementById('stat').value = "Connected Succesfully"
 
-  });
+
+$(document).ready(function () {
+    var subscribe = true;
+    var connected = true;
+
+    var address = $("#address").val();
+    client = mqtt.connect(address);
+
+    client.on("message", function (topic, payload) {
+        console.log([topic, payload].join(": "))
+    });
+
+
+    //connect
+
+    $("#btn-connect").click(function () {
+        connected = true;
+        client.on("connect", function () {
+            console.log("successfully connected!")
+        })
+        $("#status").val("connected")
+
+
+
+
+
+
+
+  
+
+    //publish
+    $("#btnPublish").click(function () {
+        var topic = $("input[name=topic]").val();
+        var payload = $("input[name=payload]").val();
+        client.publish(topic, payload)
+        $('#tbody1').append('<tr><td>' + topic + '<td>' + payload + '<td>'+moment().format('MMMM Do YYYY, h:mm:ss a') + '</td></tr>');
+
+    })
+
+
+    //unsubscribe
+    $("#btnUnsubscribe").click(function () {
+
+    });
+
+
+    //Disconnected
+    $("#btn-disconnect").click(function () {
+        client.end();
+        $("#status").val("disconnected");
+    });
+
+
+    //Subscribe
+    $("#btnSubscribe").click(function () {
+        var topic = $("input[name=topic]").val();
+        var topicSubscribe = $("input[name=topicSubscribe]").val();         
+        client.subscribe(topic);
+        console.log(topicSubscribe);
+        $('#tbody2').append('<tr><td>' + topicSubscribe + '<td>'+moment().format('MMMM Do YYYY, h:mm:ss a') + '</td></tr>');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    });
+
+
 });
 
+})
 
 
-
-  btnPublish.addEventListener('click', function (e) {
-  e.preventDefault();
-  console.log("message");
-  client.on("message", function (topic, payload) {
-    console.log([topic, payload].join(": "));
-    // client.end();
-  })
-  
-  client.publish("mqtt/demo", "hello world!")
-   
-  });
-  
-
-
-
-btnSubs.addEventListener('click', function (e) {
-  e.preventDefault();
-  client.subscribe("mqtt/demo");
-  document.getElementById("msg").value = inputPayload;
-  
-
-
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import paho.mqtt.client as mqtt
-
-
-// def on_connect(client, userdata, flags, rc):
-//   print("Connected with result code "+str(rc))
-
-
-// #def on_message(client, userdata, msg):
-// #   print(msg.topic+" "+str(msg.payload))
-
-// client = mqtt.Client()
-// client.on_connect = on_connect
-// #client.on_message = on_message
-
-// client.connect("iot.eclipse.org", 1883, 60)
-// #client.connect("broker.hivemq.com", 1883, 60)
-// while True:
-//   message = input("").split(":")
-//   if(len(message)==1):	#for all
-//     client.publish("  cay",message[0])
-//   if (len(message)==2): #for specefic receiver
-//     message[0]="cay"
-//     client.publish("r/"+message[0], message[1])
-
-
-// client.loop_forever()
 
 
 
