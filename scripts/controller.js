@@ -42,7 +42,8 @@ $(document).ready(function () {
 
     //unsubscribe
     $("#btnUnsubscribe").click(function () {
-
+        var topicSubscribe = $("input[name=topicSubscribe]").val();
+        client.unsubscribe(topicSubscribe);
     });
 
 
@@ -57,20 +58,9 @@ $(document).ready(function () {
     $("#btnSubscribe").click(function () {
         var topic = $("input[name=topic]").val();
         var topicSubscribe = $("input[name=topicSubscribe]").val();         
-        client.subscribe(topic);
+        client.subscribe(topicSubscribe);
         console.log(topicSubscribe);
         $('#tbody2').append('<tr><td>' + topicSubscribe + '<td>'+moment().format('MMMM Do YYYY, h:mm:ss a') + '</td></tr>');
-
-
-
-
-
-
-
-
-
-
-
 
 
 
