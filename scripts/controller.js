@@ -3,15 +3,16 @@
 
 $(document).ready(function () {
     var subscribe = true;
-    
-
+    var topicSubscribed = [];
+    var subscribeB=document.getElementById('btnSubscribe');
+    var client;
     var address = $("#address").val();
     client = mqtt.connect(address);
 
-    client.on("message", function (topic, payload) {
-        console.log([topic, payload].join(": "))
+    // 	client.on("message", function (topic, payload) {
+    //     console.log([topic, payload].join(": "))
     
-    });
+    // });
 
 
 
@@ -22,6 +23,14 @@ $(document).ready(function () {
             console.log("successfully connected!")
         })
         $("#status").val("connected")
+
+        client.on("message", function (topic, payload) {
+        console.log([topic, payload].join(": "));
+            $('#tbodyB').append('<tr><td>' + topic + '<td>' + payload + '<td>'+moment().format('MMMM Do YYYY, h:mm:ss a') + '</td></tr>');
+
+        //client.end();
+        })
+
 
   
 
@@ -35,41 +44,42 @@ $(document).ready(function () {
     })
 
 
-    //unsubscribe
-    $("#btnUnsubscribe").click(function () {
-        var topicSubscribe = $("input[name=topicSubscribe]").val(); 
-        client.unsubscribe(topicSubscribe);
-    });
 
-
-    //Disconnected
-    $("#btn-disconnect").click(function () {
-      
-        client.end();
-        $("#status").val("disconnected");
-  
-    });
 
 
     //Subscribe
     $("#btnSubscribe").click(function () {
-        var topic = $("input[name=topic]").val();
-        var payload = $("input[name=payload]").val();
-        var topicSubscribe = $("input[name=topicSubscribe]").val();         
-        client.subscribe(topic);
+        var topicSubscribe = $("input[name=topicSubscribe]").val();            
         console.log(topicSubscribe);
+        topicSubscribed.push(topicSubscribe);
         $('#tbody2').append('<tr><td>' + topicSubscribe + '<td>'+moment().format('MMMM Do YYYY, h:mm:ss a') + '</td></tr>');
-        if (topic ==topicSubscribe){
-            
-       $("#btnPublish").click(function () {
-            $('#tbodyB').append('<tr><td>' + topic + '<td>' + payload + '<td>'+moment().format('MMMM Do YYYY, h:mm:ss a') + '</td></tr>');
-        });
-    }
+        client.subscribe(topicSubscribe); 
+        // if (topicSubscribed.includes(topicSubscribe) ){              
+       	// $("#btnPublish").click(function () {
+        //     $('#tbodyB').append('<tr><td>' + topic + '<td>' + payload + '<td>'+moment().format('MMMM Do YYYY, h:mm:ss a') + '</td></tr>');
+        // });
+       
+    });
 
+        //unsubscribe
+     $("#btn-Unsubscribe").click(function () {
+       var topicSubscribe = $("input[name=topicSubscribe]").val();
+       alert(topicSubscribed.indexOf(topicSubscribe));
+       topicSubscribed.splice(topicSubscribed.indexOf(topicSubscribe),topicSubscribed.indexOf(topicSubscribe)+1);
+       client.unsubscribe(topicSubscribe);
+       
     });
 
 
 });
+
+        //Disconnected
+    $("#btn-disconnect").click(function () {
+        client.end();
+        document.getElementById("btnSubscribe").disabled = true;
+        $("#status").val("disconnected");
+  
+    });
 
 })
 
